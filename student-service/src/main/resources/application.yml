@@ -1,0 +1,13 @@
+server:
+  port: 9002
+
+spring:
+  application:
+    name: student-service
+
+## Additional configuration for Eureka server (optional)
+#eureka:
+#  instance:
+#    hostname: localhost
+#  server:
+#    wait-time-in-ms-when-sync-empty: 0
