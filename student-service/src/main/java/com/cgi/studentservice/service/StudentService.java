@@ -27,8 +27,9 @@ public class StudentService {
         College college = restTemplate.getForObject("http://college-service/college/" + studentId, College.class);
 
         Student student = studentRepo.findByStudentId(studentId);
-        BeanUtils.copyProperties(student,studentData);
+//        BeanUtils.copyProperties(student,studentData);
         studentData.setCollege(college);
+        studentData.setStudent(student);
         return studentData;
 
     }

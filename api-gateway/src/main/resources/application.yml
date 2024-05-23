@@ -1,0 +1,51 @@
+server:
+  port: 9003
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: college-service
+          uri: lb://college-service
+          predicates:
+            - Path=/college/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: college-service
+                fallbackuri: forward:/collegeserviceFallBack
+
+        - id: student-service
+          uri: lb://student-service
+          predicates:
+            - Path=/student/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: student-service
+                fallbackuri: forward:/studentserviceFallBack
+
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 4000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: hystrix.stream, info, health
+
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost
